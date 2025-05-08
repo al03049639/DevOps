@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Compra - Bring Me The Horizon</title>
+    <link rel="stylesheet" href="css/compra.css">
+</head>
+<body>
+    <h1>Compra tus boletos - Bring Me The Horizon</h1>
+    <p>Selecciona tus asientos:</p>
+    
+    <div class="map-container">
+        <button class="seat vip" data-precio="2500" style="top:50px; left:100px;">VIP1</button>
+        <button class="seat vip occupied" data-precio="2500" style="top:50px; left:150px;" disabled>VIP2</button>
+        <button class="seat vip" data-precio="2500" style="top:50px; left:200px;">VIP3</button>
+        <button class="seat general" data-precio="1500" style="top:150px; left:100px;">G1</button>
+        <button class="seat general" data-precio="1500" style="top:150px; left:150px;">G2</button>
+        <button class="seat general" data-precio="1500" style="top:150px; left:200px;">G3</button>
+        <button class="seat balcon" data-precio="800" style="top:250px; left:100px;">B1</button>
+        <button class="seat balcon" data-precio="800" style="top:250px; left:150px;">B2</button>
+        <button class="seat balcon" data-precio="800" style="top:250px; left:200px;">B3</button>
+    </div>
+    
+    <div class="legend">
+        <div><div class="box vip"></div> VIP ($2500)</div>
+        <div><div class="box general"></div> General ($1500)</div>
+        <div><div class="box balcon"></div> Balcón ($800)</div>
+    </div>
+    
+    <div id="precio-total">Total: $0 MXN</div>
+    
+    <button class="btn-confirmar">Confirmar Compra</button>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Detalles de Pago</h2>
+            <input type="text" id="nombre" placeholder="Nombre completo">
+            <input type="email" id="correo" placeholder="Correo electrónico">
+            <select id="metodo-pago">
+                <option value="">-- Selecciona método de pago --</option>
+                <option value="debito">Tarjeta de Débito</option>
+                <option value="credito">Tarjeta de Crédito</option>
+                <option value="paypal">PayPal</option>
+            </select>
+            <div id="extra-fields"></div>
+            <button class="btn-pagar">Pagar</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script src="js/compra.js"></script>
+</body>
+</html>

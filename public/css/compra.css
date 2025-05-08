@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+  }
+  h1 {
+    color: #0071ce;
+    margin-bottom: 10px;
+  }
+  p {
+    margin-bottom: 30px;
+    font-size: 1.1em;
+  }
+  .map-container {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+    opacity: 50;
+    background: url('https://periodicocorreo.com.mx/__export/sites/correo/img/2024/03/06/103015s-071653982.jpg') no-repeat center center;
+    background-size: contain;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .seat {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .vip { background-color: #d4af37; } /* Oro */
+  .general { background-color: #0071ce; } /* Azul */
+  .balcon { background-color: #8e44ad; } /* Morado */
+  .occupied { background-color: grey !important; cursor: not-allowed; }
+  .selected { background-color: #28a745 !important; }
+
+  .legend {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  .legend div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em;
+  }
+  .legend .box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+  .btn-confirmar {
+    margin-top: 30px;
+    padding: 10px 30px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+  }
+
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    animation: aparecer 0.3s ease;
+  }
+  @keyframes aparecer {
+    from {transform: scale(0.7);}
+    to {transform: scale(1);}
+  }
+  .modal-content select, .modal-content input, .modal-content button {
+    margin-top: 15px;
+    width: 90%;
+    padding: 10px;
+    font-size: 1em;
+  }
+  .btn-pagar {
+    background-color: #0071ce;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  .resumen {
+    background: #e0e0e0;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-size: 0.95em;
+    text-align: left;
+  }
+  #precio-total {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #333;
+  }

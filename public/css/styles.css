@@ -1,0 +1,101 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #323435;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #1c1d1e;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+.hero {
+    background-image: url('https://images.unsplash.com/photo-1515169067865-5387ec356754?fit=crop&w=1400&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    font-size: 2em;
+}
+
+.concerts {
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.concert {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.concert:hover {
+    transform: translateY(-5px);
+}
+
+.concert img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.concert h3 {
+    margin: 15px 0 10px;
+    font-size: 1.2em;
+}
+
+.concert p {
+    margin: 0 0 15px;
+    color: #666;
+}
+
+.btn {
+    background-color: #323435;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn.disabled {
+    background-color: grey;
+    pointer-events: none;
+    cursor: default;
+}
+
+footer {
+    background-color: #323435;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+}
