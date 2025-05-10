@@ -31,12 +31,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Manejar método de pago
-    metodoPago.addEventListener('change', () => {
-        const extraFields = document.getElementById('extra-fields');
-        extraFields.innerHTML = metodoPago.value === 'paypal' ? 
-            '<input type="email" placeholder="Correo PayPal">' : 
-            '<input type="text" placeholder="Número de tarjeta">';
-    });
+   metodoPago.addEventListener('change', () => {
+    const extraFields = document.getElementById('extra-fields');
+
+    if (metodoPago.value === 'paypal') {
+        extraFields.innerHTML = `
+            <input type="email" id="paypal-email" placeholder="Correo PayPal" required>
+        `;
+    } else if (metodoPago.value === 'debito' || metodoPago.value === 'credito') {
+        extraFields.innerHTML = `
+            <input type="text" id="tarjeta-numero" placeholder="Número de tarjeta" maxlength="19" required>
+            <input type="text" id="tarjeta-titular" placeholder="Nombre del titular" required>
+            <input type="text" id="tarjeta-vencimiento" placeholder="Fecha de vencimiento (MM/AA)" pattern="^(0[1-9]|1[0-2])\/\\d{2}$" required>
+            <input type="text" id="tarjeta-cvv" placeholder="CVV" maxlength="4" pattern="\\d{3,4}" required>
+        `;
+    } else {
+        extraFields.innerHTML = '';
+    }
+});
+
+
     
     // Cerrar modal
     window.onclick = (e) => e.target === modal && (modal.style.display = 'none');
