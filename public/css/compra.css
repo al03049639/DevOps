@@ -121,3 +121,12 @@ body {
     font-size: 1.2em;
     color: #333;
   }
+  .btn-volver {
+    background-color: #323435;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
