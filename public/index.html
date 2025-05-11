@@ -13,19 +13,27 @@
     </header>
 
     <style>
-  body {
-    background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
-                url('https://pbs.twimg.com/amplify_video_thumb/1780703709758132224/img/E1nRAOswygywFgdo.jpg:large') no-repeat center center fixed;
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
-</style>
+    body {
+        background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
+                    url('https://pbs.twimg.com/amplify_video_thumb/1780703709758132224/img/E1nRAOswygywFgdo.jpg:large') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    </style>
 
     <nav>
         <a href="#">Inicio</a>
-        <a href="#">Mi cuenta</a>
+        <div id="accountSection">
+            <a href="login.html" id="accountLink">Mi cuenta</a>
+            <!-- Contenedor para datos de usuario autenticado -->
+            <div id="userPanel" style="display: none;">
+                <span id="usernameDisplay"></span>
+                <input type="hidden" name="_csrf" id="csrfToken">
+                <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
+            </div>
+        </div>
     </nav>
 
     <section class="hero">
@@ -54,6 +62,8 @@
             <span class="btn disabled">Sold Out</span>
         </div>
     </section>
+
+    <script src="js/cuenta.js"></script>
 
     <footer>
         © 2025 Boleticket©. Todos los derechos reservados.

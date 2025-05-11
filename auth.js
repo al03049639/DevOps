@@ -3,51 +3,66 @@ const bcrypt          = require('bcrypt');
 const logger          = require('./logger')
 const { v4: uuidv4 }  = require('uuid'); // UUID for unique session IDs
 
+
 /**
- * 📌 Verifica si un usuario existe en la base de datos y su contraseña es correcta.
- * Si el login es exitoso, se almacena una sesión en la tabla `user_session`.
+ * 📌 Verifica si un usuario existe y su contraseña es correcta.
  * @param {string} username - Nombre de usuario
  * @param {string} password - Contraseña en texto plano
- * @returns {object|null} - Información del usuario y sesión o `null` si las credenciales son incorrectas.
+ * @returns {object|null} - Datos del usuario + sessionId, o `null` si hay error.
  */
 async function authenticateUser(username, password) {
-    logger.logMessage('BEGIN authenticateUser()')
-    const sql = 'SELECT id, username, password FROM user WHERE username = ?';
+    logger.logMessage('BEGIN authenticateUser()');
+
+    // Obtener más datos del usuario
+    const sql = 'SELECT id, username, password, nombre_completo, email FROM users WHERE username = ?';
     const [rows] = await pool.execute(sql, [username]);
 
-    if (rows.length === 0) return null; // Usuario no encontrado
+    if (rows.length === 0) return null;
 
-    const user = rows[0];
-
-    // Verificar la contraseña con bcrypt
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const users = rows[0];
+    const isPasswordValid = await bcrypt.compare(password, users.password);
     if (!isPasswordValid) return null;
 
-    // Generar un nuevo session_id
     const sessionId = uuidv4();
-    await storeUserSession(user.id, sessionId);
-    logger.logMessage('END authenticateUser()')
-    return { id: user.id, username: user.username, sessionId };
+    await storeUserSession(users.id, sessionId);
+    
+    logger.logMessage('END authenticateUser()');
+    return { 
+        id: users.id,
+        username: users.username,
+        nombre_completo: users.nombre_completo,
+        email: users.email,
+        sessionId 
+    };
 }
 
 /**
  * 📌 Registra un nuevo usuario en la base de datos con contraseña hasheada.
  * @param {string} username - Nombre de usuario
  * @param {string} password - Contraseña en texto plano
- * @returns {boolean} - `true` si el usuario fue creado con éxito, `false` si ya existía.
+ * @param {string} nombre_completo - Nombre completo del usuario
+ * @param {string} email - Correo electrónico
+ * @returns {boolean} - `true` si el usuario fue creado, `false` si ya existía.
  */
-async function registerUser(username, password) {
-    logger.logMessage('BEGIN registerUser()')
+async function registerUser(username, password, nombre_completo, email) {
+    logger.logMessage('BEGIN registerUser()');
 
-    // Verificar si el usuario ya existe
-    const [existingUser] = await pool.execute('SELECT id FROM user WHERE username = ?', [username]);
-    if (existingUser.length > 0) return false; // Usuario ya registrado
+    // Verificar si el usuario o email ya existen
+    const [existingUser] = await pool.execute(
+        'SELECT id FROM users WHERE username = ? OR email = ?',
+        [username, email]
+    );
+    
+    if (existingUser.length > 0) return false;
 
-    // Hashear la contraseña antes de guardarla
+    // Hashear contraseña e insertar nuevo usuario
     const hashedPassword = await bcrypt.hash(password, 10);
-    await pool.execute('INSERT INTO user (username, password) VALUES (?, ?)', [username, hashedPassword]);
-    logger.logMessage('END registerUser()')
+    await pool.execute(
+        'INSERT INTO users (username, password, nombre_completo, email) VALUES (?, ?, ?, ?)',
+        [username, hashedPassword, nombre_completo, email]
+    );
 
+    logger.logMessage('END registerUser()');
     return true;
 }
 
@@ -67,3 +82,4 @@ async function storeUserSession(userId, sessionId) {
 }
 
 module.exports = { authenticateUser, registerUser, storeUserSession };
+

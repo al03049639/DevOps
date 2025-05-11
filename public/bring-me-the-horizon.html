@@ -35,6 +35,7 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <h2>Detalles de Pago</h2>
+            <input type="hidden" id="csrf-token" name="_csrf">
             <input type="text" id="nombre" placeholder="Nombre completo">
             <input type="email" id="correo" placeholder="Correo electrónico">
             <select id="metodo-pago">
@@ -49,6 +50,13 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script>
+        fetch('/csrf-token')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('csrf-token').value = data.csrfToken;
+            });
+    </script>
     <script src="js/compra.js"></script>
 </body>
 </html>

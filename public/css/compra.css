@@ -15,10 +15,11 @@ body {
   }
   .map-container {
     position: relative;
-    width: 600px;
+    width: 90%;
+    max-width: 600px;
     height: 400px;
     margin: 0 auto;
-    opacity: 50;
+    opacity: .9;
     background: url('https://periodicocorreo.com.mx/__export/sites/correo/img/2024/03/06/103015s-071653982.jpg') no-repeat center center;
     background-size: contain;
     border: 2px solid #ccc;
@@ -27,8 +28,8 @@ body {
   }
   .seat {
     position: absolute;
-    width: 30px;
-    height: 30px;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
     border: none;
     color: white;

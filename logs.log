@@ -1,2 +1,61 @@
 [33m[2025:05:07 14:49:52] [DEBUG] Server running on port 3000[0m
 [36m[2025:05:07 14:49:52] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 11:41:53] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[36m[2025:05:11 11:41:53] [INFO] Apagando servidor...[0m
+[33m[2025:05:11 11:41:53] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 11:42:00] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 11:42:00] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 11:47:54] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 11:47:54] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 12:28:35] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 12:28:36] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 12:38:47] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 12:38:47] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 12:38:51] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 12:38:51] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 12:45:06] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 12:45:06] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 12:45:12] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 12:45:12] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 12:51:13] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 12:51:13] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 12:51:17] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 12:51:17] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 13:02:40] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 13:02:40] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 13:02:50] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 13:02:50] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 13:15:45] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 13:15:45] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 13:15:54] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 13:15:54] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 13:24:35] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 13:24:35] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 13:24:40] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 13:24:40] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 13:32:39] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 13:32:39] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 13:32:43] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 13:32:43] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 14:31:36] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 14:31:36] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 14:31:41] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 14:31:41] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 14:41:28] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 14:41:28] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 14:44:40] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 14:44:40] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 14:45:16] [DEBUG] BEGIN registerUser()[0m
+[33m[2025:05:11 14:45:16] [DEBUG] END registerUser()[0m
+[33m[2025:05:11 14:45:30] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 14:45:30] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 05f8b057-56c9-48fd-b27a-975accf6c443[0m
+[33m[2025:05:11 14:45:30] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 14:45:30] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 16:23:25] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 16:23:25] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 16:23:30] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 16:23:30] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 16:23:43] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 16:23:43] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 41791660-1215-4046-a5bf-d5413ca097b8[0m
+[33m[2025:05:11 16:23:43] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 16:23:43] [DEBUG] END authenticateUser()[0m
