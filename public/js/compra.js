@@ -57,22 +57,36 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Generar QR
     document.querySelector('.btn-pagar').addEventListener('click', () => {
-        const nombre = document.getElementById('nombre').value;
-        const total = precioTotal.textContent;
-        
-        if (nombre) {
-            const qrDiv = document.createElement('div');
-            new QRCode(qrDiv, {
-                text: `Nombre: ${nombre}\n${total}`,
-                width: 180,
-                height: 180
-            });
-            
-            document.querySelector('.modal-content').innerHTML = `
-                <h2>¡Compra exitosa!</h2>
-                <p>Presenta este QR en la entrada:</p>
-            `;
-            document.querySelector('.modal-content').appendChild(qrDiv);
-        }
-    });
+    const nombre = document.getElementById('nombre').value;
+    const total = precioTotal.textContent;
+
+    if (nombre) {
+        const qrDiv = document.createElement('div');
+        new QRCode(qrDiv, {
+            text: `Nombre: ${nombre}\n${total}`,
+            width: 180,
+            height: 180
+        });
+
+        const modalContent = document.querySelector('.modal-content');
+        modalContent.innerHTML = `
+            <h2>¡Compra exitosa!</h2>
+            <p>Presenta este QR en la entrada:</p>
+        `;
+        modalContent.appendChild(qrDiv);
+
+        // Crear botón de volver a inicio
+        const volverBtn = document.createElement('button');
+        volverBtn.textContent = 'Volver a inicio';
+        volverBtn.classList.add('btn-volver');
+        volverBtn.style.marginTop = '20px';
+
+        // Redirigir al inicio
+        volverBtn.addEventListener('click', () => {
+            window.location.href = 'index.html'; // Asegúrate de que este sea el nombre correcto de la página principal
+        });
+
+        modalContent.appendChild(volverBtn);
+    }
+});
 });
