@@ -98,3 +98,22 @@
 [31m[2025:05:11 19:28:28] [ERROR] Error en /confirmar-pago: Bind parameters must not contain undefined. To pass SQL NULL specify JS null[0m
 [31m[2025:05:11 19:34:51] [ERROR] Error en /confirmar-pago: Bind parameters must not contain undefined. To pass SQL NULL specify JS null[0m
 [31m[2025:05:11 19:41:40] [ERROR] Error en /confirmar-pago: Bind parameters must not contain undefined. To pass SQL NULL specify JS null[0m
+[33m[2025:05:11 20:04:29] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 20:04:29] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 20:04:35] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 20:04:35] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 20:04:55] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 20:04:55] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = a237af82-d61c-4d08-8163-d585926df661[0m
+[33m[2025:05:11 20:04:55] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 20:04:55] [DEBUG] END authenticateUser()[0m
+[31m[2025:05:11 20:05:10] [ERROR] Error en /confirmar-pago: transactionId is not defined[0m
+[33m[2025:05:11 20:08:46] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 20:08:46] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 20:08:51] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 20:08:51] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 20:09:05] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 20:09:05] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 2d081c6e-f01d-4dad-9d4c-aa2f664ba5fd[0m
+[33m[2025:05:11 20:09:05] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 20:09:05] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 21:48:05] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 21:48:05] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m

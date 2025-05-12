@@ -1,6 +1,78 @@
 let csrfToken;
 let evento; 
 let total = 0; 
+let qrGenerated = false;
+
+// Dentro del evento click de .btn-pagar (antes del fetch)
+const generarQR = () => {
+    if (qrGenerated) return;
+    
+    // Obtener datos necesarios
+    const datosQR = {
+        nombre: document.getElementById('nombre').value,
+        email: document.getElementById('correo').value,
+        evento: evento.nombre,
+        lugar: evento.lugar,
+        fecha: new Date(evento.fecha).toLocaleDateString('es-MX', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }),
+        boletos: {
+            vip: document.getElementById('vipQty').value,
+            general: document.getElementById('generalQty').value,
+            balcon: document.getElementById('balconQty').value
+        }
+    };
+
+    // Formatear texto del QR
+    const textoQR = `
+    🎟️ Boleticket - Compra verificada
+    --------------------------------
+    👤 Nombre: ${datosQR.nombre}
+    📧 Email: ${datosQR.email}
+    
+    🎵 Evento: ${datosQR.evento}
+    📍 Lugar: ${datosQR.lugar}
+    🕑 Fecha: ${datosQR.fecha}
+    
+    🎫 Boletos:
+    VIP: ${datosQR.boletos.vip}
+    General: ${datosQR.boletos.general}
+    Balcón: ${datosQR.boletos.balcon}
+    
+    🔒 Código de verificación: ${uuidv4().substring(0, 8).toUpperCase()}
+    `;
+
+    // Generar QR
+    const qrContainer = document.createElement('div');
+    qrContainer.id = 'qrContainer';
+    qrContainer.style.marginTop = '20px';
+    qrContainer.style.textAlign = 'center';
+    
+    document.querySelector('.modal-content').appendChild(qrContainer);
+
+    new QRCode(qrContainer, {
+        text: textoQR,
+        width: 180,
+        height: 180,
+        colorDark: "#0071ce",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+
+    // Agregar texto debajo del QR
+    const qrText = document.createElement('p');
+    qrText.style.fontSize = '0.9em';
+    qrText.style.color = '#666';
+    qrText.textContent = 'Presente este código en la entrada del evento';
+    qrContainer.appendChild(qrText);
+
+    qrGenerated = true;
+};
 
 async function obtenerCSRFToken() {
     const response = await fetch('/csrf-token');
@@ -112,11 +184,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const nombre = document.getElementById('nombre').value;
         const email = document.getElementById('correo').value;
         const metodoPago = document.getElementById('metodo-pago').value;
-        const cantidades = [
-            { tipo: 'cant_vip', cantidad: parseInt(document.getElementById('vipQty').value) || 0 }, // Key fixed
-            { tipo: 'cant_general', cantidad: parseInt(document.getElementById('generalQty').value) || 0 }, // Key fixed
-            { tipo: 'cant_balcon', cantidad: parseInt(document.getElementById('balconQty').value) || 0 } // Key fixed
-        ];
+        const cantidades = {
+            vip: parseInt(document.getElementById('vipQty').value) || 0,
+            general: parseInt(document.getElementById('generalQty').value) || 0,
+            balcon: parseInt(document.getElementById('balconQty').value) || 0
+        };
 
         const eventoId = new URLSearchParams(window.location.search).get('id');
 
@@ -213,7 +285,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             const qrDiv = document.createElement('div');
             new QRCode(qrDiv, {
-                text: `ID: ${transactionId}\nTotal: $${total} MXN`,
+                text: `ID: ${transactionId}\nCorreo: ${email}\nTotal: $${total} MXN`,
                 width: 180,
                 height: 180
             });

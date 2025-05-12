@@ -112,18 +112,31 @@ app.post('/auth/logout', (req, res) => {
 app.listen(PORT, () => logger.logMessage(`Server running on port ${PORT}`));
 
 app.post('/confirmar-pago', async (req, res) => {
+
+    const connection = await pool.getConnection();
+
     try {
-        if (!req.session.users) return res.status(401).json({ error: 'Usuario no autenticado' });
-        
-        const { cantidades, metodoPago, eventoId } = req.body; 
-        
-        const total = (cantidades.vip * 2500) + 
-                     (cantidades.general * 1500) + 
-                     (cantidades.balcon * 800);
+        await connection.beginTransaction();
+
+        // Obtener cantidades del body
+        const { cantidades, metodoPago, eventoId } = req.body;
 
         const transactionId = uuidv4();
 
-        await pool.execute(`
+        // Validar que cantidades existen y tienen valores
+        const safeCantidades = {
+            vip: Number(cantidades.vip) || 0,
+            general: Number(cantidades.general) || 0,
+            balcon: Number(cantidades.balcon) || 0
+        };
+
+        // Calcular total usando cantidades seguras
+        const total = (safeCantidades.vip * 2500) + 
+                     (safeCantidades.general * 1500) + 
+                     (safeCantidades.balcon * 800);
+
+        // Insertar transacción
+        await connection.execute(`
             INSERT INTO transactions 
                 (transaction_id, user_id, total, payment_method, cant_vip, cant_general, cant_balcon)
             VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -132,29 +145,33 @@ app.post('/confirmar-pago', async (req, res) => {
             req.session.users.id,
             total,
             metodoPago,
-            cantidades.vip,
-            cantidades.general,
-            cantidades.balcon
+            safeCantidades.vip,
+            safeCantidades.general,
+            safeCantidades.balcon // Asegurar valores numéricos
         ]);
 
-        // Actualizar stock del evento
-        await pool.execute(`
+        // Actualizar stock
+        await connection.execute(`
             UPDATE eventos SET
                 boletos_vip = boletos_vip - ?,
                 boletos_general = boletos_general - ?,
                 boletos_balcon = boletos_balcon - ?
             WHERE id = ?
         `, [
-            cantidades.vip,
-            cantidades.general,
-            cantidades.balcon,
+            safeCantidades.vip,
+            safeCantidades.general,
+            safeCantidades.balcon,
             eventoId
         ]);
-
+        
+        await connection.commit();
         res.json({ transactionId });
     } catch (error) {
+        await connection.rollback();
         logger.logMessage(`Error en /confirmar-pago: ${error.message}`, 'error');
         res.status(500).json({ error: error.message });
+    } finally {
+        connection.release();
     }
 });
 
