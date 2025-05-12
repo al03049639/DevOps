@@ -10,7 +10,6 @@ const csrfProtection = csrf({ cookie: true });
 const { v4: uuidv4 } = require('uuid'); 
 
 const { authenticateUser, registerUser }  = require('./auth');
-const { calcularTotal } = require('./utils');
 const pool = require('./db'); 
 
 app.use(cookieParser()); // Habilita el manejo de cookies
@@ -112,34 +111,34 @@ app.post('/auth/logout', (req, res) => {
 app.listen(PORT, () => logger.logMessage(`Server running on port ${PORT}`));
 
 app.post('/confirmar-pago', async (req, res) => {
-
     const connection = await pool.getConnection();
-
     try {
         await connection.beginTransaction();
 
-        // Obtener cantidades del body
         const { cantidades, metodoPago, eventoId } = req.body;
-
         const transactionId = uuidv4();
 
-        // Validar que cantidades existen y tienen valores
+        const [evento] = await connection.execute(
+            'SELECT nombre, fecha FROM eventos WHERE id = ?', 
+            [eventoId]
+        );
+
         const safeCantidades = {
             vip: Number(cantidades.vip) || 0,
             general: Number(cantidades.general) || 0,
             balcon: Number(cantidades.balcon) || 0
         };
 
-        // Calcular total usando cantidades seguras
         const total = (safeCantidades.vip * 2500) + 
                      (safeCantidades.general * 1500) + 
                      (safeCantidades.balcon * 800);
 
-        // Insertar transacción
+        // Insertar transacción CON EVENTO_ID
         await connection.execute(`
             INSERT INTO transactions 
-                (transaction_id, user_id, total, payment_method, cant_vip, cant_general, cant_balcon)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+                (transaction_id, user_id, total, payment_method, 
+                 cant_vip, cant_general, cant_balcon, evento_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `, [
             transactionId,
             req.session.users.id,
@@ -147,10 +146,10 @@ app.post('/confirmar-pago', async (req, res) => {
             metodoPago,
             safeCantidades.vip,
             safeCantidades.general,
-            safeCantidades.balcon // Asegurar valores numéricos
+            safeCantidades.balcon,
+            eventoId
         ]);
 
-        // Actualizar stock
         await connection.execute(`
             UPDATE eventos SET
                 boletos_vip = boletos_vip - ?,
@@ -197,12 +196,23 @@ app.get('/admin/eventos', checkAdmin, async (req, res) => {
     res.json(eventos);
 });
 
+app.get('/admin/eventos/:id', checkAdmin, async (req, res) => {
+    const [evento] = await pool.execute('SELECT * FROM eventos WHERE id = ?', [req.params.id]);
+    res.json(evento[0] || {});
+});
+
 app.post('/admin/eventos', checkAdmin, async (req, res) => {
     const { nombre, fecha, lugar, imagen_url, boletos_vip, boletos_general, boletos_balcon } = req.body;
     await pool.execute(
         'INSERT INTO eventos (nombre, fecha, lugar, imagen_url, boletos_vip, boletos_general, boletos_balcon) VALUES (?, ?, ?, ?, ?, ?, ?)',
         [nombre, fecha, lugar, imagen_url, boletos_vip, boletos_general, boletos_balcon]
     );
+    res.json({ success: true });
+});
+
+app.delete('/admin/eventos/:id', checkAdmin, async (req, res) => {
+    const { id } = req.params;
+    await pool.execute('DELETE FROM eventos WHERE id = ?', [id]);
     res.json({ success: true });
 });
 
@@ -220,23 +230,70 @@ app.put('/admin/eventos/:id', checkAdmin, async (req, res) => {
 app.get('/admin/transacciones', checkAdmin, async (req, res) => {
     const [transacciones] = await pool.execute(`
         SELECT 
-            transaction_id,
-            total,
-            payment_method,
-            cant_vip,
-            cant_general,
-            cant_balcon,
-            transaction_date,
-            status
-        FROM transactions
+            t.transaction_id,
+            t.evento_id,
+            e.nombre AS evento_nombre,
+            t.total,
+            t.payment_method,
+            t.cant_vip,
+            t.cant_general,
+            t.cant_balcon,
+            t.transaction_date,
+            t.status
+        FROM transactions t
+        LEFT JOIN eventos e ON t.evento_id = e.id
     `);
     res.json(transacciones);
 });
 app.put('/admin/transacciones/:id/estado', checkAdmin, async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
-    await pool.execute('UPDATE transactions SET status=? WHERE transaction_id=?', [estado, id]);
-    res.json({ success: true });
+    
+    const connection = await pool.getConnection();
+    try {
+        await connection.beginTransaction();
+
+        const [transaccion] = await connection.execute(
+            'SELECT * FROM transactions WHERE transaction_id = ?', 
+            [id]
+        );
+
+        if (transaccion.length === 0) {
+            throw new Error('Transacción no encontrada');
+        }
+
+        // Manejar transacciones sin evento asociado
+        if (estado === 'cancelada' && transaccion[0].status !== 'cancelada') {
+            if (transaccion[0].evento_id) {
+                await connection.execute(`
+                    UPDATE eventos 
+                    SET 
+                        boletos_vip = boletos_vip + ?,
+                        boletos_general = boletos_general + ?,
+                        boletos_balcon = boletos_balcon + ?
+                    WHERE id = ?
+                `, [
+                    transaccion[0].cant_vip,
+                    transaccion[0].cant_general,
+                    transaccion[0].cant_balcon,
+                    transaccion[0].evento_id
+                ]);
+            }
+        }
+
+        await connection.execute(
+            'UPDATE transactions SET status = ? WHERE transaction_id = ?',
+            [estado, id]
+        );
+
+        await connection.commit();
+        res.json({ success: true });
+    } catch (error) {
+        await connection.rollback();
+        res.status(400).json({ error: error.message });
+    } finally {
+        connection.release();
+    }
 });
 
 

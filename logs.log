@@ -117,3 +117,64 @@
 [33m[2025:05:11 20:09:05] [DEBUG] END authenticateUser()[0m
 [33m[2025:05:11 21:48:05] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
 [33m[2025:05:11 21:48:05] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 21:48:55] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 21:48:55] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 21:49:51] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 21:49:59] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 21:50:04] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 21:50:04] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 7dac9bfd-d629-4064-88a9-e8204378a9fa[0m
+[33m[2025:05:11 21:50:04] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 21:50:04] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 22:03:42] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 22:03:42] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 22:08:48] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 22:08:48] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 22:09:10] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 22:09:10] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 87b7153e-f520-48b9-89e8-a82459e671eb[0m
+[33m[2025:05:11 22:09:10] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 22:09:10] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 22:38:44] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 22:38:44] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 22:38:48] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 22:38:48] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 22:39:00] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 22:39:00] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 8e618a05-ef0c-41f9-af3a-5cde377282fc[0m
+[33m[2025:05:11 22:39:00] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 22:39:00] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 23:14:07] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 23:14:07] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 23:14:12] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 23:14:12] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 23:14:27] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 23:14:31] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 23:14:31] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = af4ba3ce-a936-4516-a13c-94f066572732[0m
+[33m[2025:05:11 23:14:31] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 23:14:31] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 23:15:21] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 23:15:21] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 23:15:26] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 23:15:26] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 23:15:34] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 23:15:34] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = a3c2846f-0020-4dd4-b2d8-c811fee8eb47[0m
+[33m[2025:05:11 23:15:34] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 23:15:34] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 23:17:41] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 23:17:41] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 23:18:01] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 23:18:01] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 46441e89-1382-48a2-9e9b-fea710cd727d[0m
+[33m[2025:05:11 23:18:01] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 23:18:01] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 23:22:17] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 23:22:17] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 23:22:42] [DEBUG] BEGIN registerUser()[0m
+[33m[2025:05:11 23:22:42] [DEBUG] END registerUser()[0m
+[33m[2025:05:11 23:22:50] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 23:22:50] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 07552535-432e-40d5-9cd0-43f18e724711[0m
+[33m[2025:05:11 23:22:50] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 23:22:50] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 23:25:33] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 23:25:33] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 23:26:26] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 23:26:26] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = e04d33bd-1564-4729-87f3-2b448949644a[0m
+[33m[2025:05:11 23:26:26] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 23:26:26] [DEBUG] END authenticateUser()[0m

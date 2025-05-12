@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <p>🏟️ ${evento.lugar}</p>
                 <p>🎟️ VIP: ${evento.boletos_vip} | General: ${evento.boletos_general} | Balcón: ${evento.boletos_balcon}</p>
                 <button class="editar-evento" data-id="${evento.id}">✏️ Editar</button>
+                <button class="eliminar-evento" data-id="${evento.id}">🗑️ Eliminar</button>
             </div>
         `).join('');
 
@@ -24,8 +25,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         detalleTransacciones.innerHTML = transacciones.map(t => `
             <div class="transaccion">
                 <p>ID: ${t.transaction_id}</p>
-                <p>Evento: ${t.evento_nombre || 'N/A'}</p>
+                <p>Evento: ${t.evento_nombre || 'No asociado'}</p>
                 <p>Total: $${t.total} | Estado: 
+                    <span class="status-badge ${t.status}">${t.status}</span>
                     <select class="cambiar-estado" data-id="${t.transaction_id}">
                         <option ${t.status === 'pendiente' ? 'selected' : ''}>pendiente</option>
                         <option ${t.status === 'completada' ? 'selected' : ''}>completada</option>
@@ -49,47 +51,132 @@ document.addEventListener('DOMContentLoaded', async () => {
             fecha: document.getElementById('eventoFecha').value,
             lugar: document.getElementById('eventoLugar').value,
             imagen_url: document.getElementById('eventoImagen').value,
-            boletos_vip: document.getElementById('boletosVIP').value,
-            boletos_general: document.getElementById('boletosGeneral').value,
-            boletos_balcon: document.getElementById('boletosBalcon').value
+            boletos_vip: parseInt(document.getElementById('boletosVIP').value) || 0,
+            boletos_general: parseInt(document.getElementById('boletosGeneral').value) || 0,
+            boletos_balcon: parseInt(document.getElementById('boletosBalcon').value) || 0
         };
 
-        const endpoint = eventoEditando ? `/admin/eventos/${eventoEditando}` : '/admin/eventos';
-        await fetch(endpoint, {
-            method: eventoEditando ? 'PUT' : 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(eventoData)
-        });
+        try {
+            const csrfToken = await fetch('/csrf-token').then(res => res.json()).then(data => data.csrfToken);
+            
+            const endpoint = eventoEditando ? `/admin/eventos/${eventoEditando}` : '/admin/eventos';
+            const method = eventoEditando ? 'PUT' : 'POST';
 
-        cargarDatos();
-        document.getElementById('eventoModal').style.display = 'none';
-        
-        await pool.execute(
-            'UPDATE eventos SET boletos_vip=?, boletos_general=?, boletos_balcon=? WHERE id=?',
-            [eventoData.boletos_vip, eventoData.boletos_general, eventoData.boletos_balcon, id]
-        );
+            const response = await fetch(endpoint, {
+                method,
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken
+                },
+                body: JSON.stringify(eventoData)
+            });
+
+            if (!response.ok) throw new Error('Error al guardar');
+
+            // Limpiar formulario después de guardar
+            if (!eventoEditando) {
+                document.querySelectorAll('#eventoModal input').forEach(input => input.value = '');
+            }
+
+            cargarDatos();
+            document.getElementById('eventoModal').style.display = 'none';
+            
+        } catch (error) {
+            alert(error.message);
+        }
     });
 
     // Delegación de eventos para editar
     document.getElementById('listaEventos').addEventListener('click', async (e) => {
         if (e.target.classList.contains('editar-evento')) {
             const id = e.target.dataset.id;
+            
+            // Obtener datos completos del evento
             const evento = await fetch(`/admin/eventos/${id}`).then(res => res.json());
-            // Rellenar modal con datos del evento...
+            
+            // Llenar formulario
+            document.getElementById('eventoNombre').value = evento.nombre;
+            document.getElementById('eventoFecha').value = evento.fecha.slice(0, 16); // Formato datetime-local
+            document.getElementById('eventoLugar').value = evento.lugar;
+            document.getElementById('eventoImagen').value = evento.imagen_url;
+            document.getElementById('boletosVIP').value = evento.boletos_vip;
+            document.getElementById('boletosGeneral').value = evento.boletos_general;
+            document.getElementById('boletosBalcon').value = evento.boletos_balcon;
+            
             eventoEditando = id;
             document.getElementById('eventoModal').style.display = 'flex';
+        }
+    });
+
+    // Delegación de eventos para eliminar
+    document.getElementById('listaEventos').addEventListener('click', async (e) => {
+        if (e.target.classList.contains('eliminar-evento')) {
+            const button = e.target;
+            button.disabled = true;
+            button.textContent = 'Eliminando...';
+
+            if (confirm('¿Eliminar este evento permanentemente?')) {
+                try {
+                    // Obtener CSRF Token
+                    const csrfToken = await fetch('/csrf-token')
+                        .then(res => res.json())
+                        .then(data => data.csrfToken);
+
+                    // Enviar solicitud DELETE con token
+                    const response = await fetch(`/admin/eventos/${button.dataset.id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-Token': csrfToken
+                        }
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al eliminar');
+                    }
+
+                    // Eliminar tarjeta visualmente
+                    button.closest('.evento-card').remove();
+
+                } catch (error) {
+                    alert(error.message);
+                }
+            }
+            
+            // Restaurar botón
+            button.disabled = false;
+            button.textContent = '🗑️ Eliminar';
         }
     });
 
     // Cambiar estado de transacción
     document.getElementById('detalleTransacciones').addEventListener('change', async (e) => {
         if (e.target.classList.contains('cambiar-estado')) {
-            await fetch(`/admin/transacciones/${e.target.dataset.id}/estado`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ estado: e.target.value })
-            });
-            cargarDatos();
+            const select = e.target;
+            const statusBadge = select.previousElementSibling; // Elemento <span> hermano
+            
+            try {
+                const csrfToken = await fetch('/csrf-token').then(res => res.json()).then(data => data.csrfToken);
+                
+                const response = await fetch(`/admin/transacciones/${select.dataset.id}/estado`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': csrfToken
+                    },
+                    body: JSON.stringify({ estado: select.value })
+                });
+
+                if (!response.ok) throw new Error('Error en el servidor');
+
+                // Actualizar UI
+                statusBadge.textContent = select.value;
+                statusBadge.className = `status-badge ${select.value}`;
+
+            } catch (error) {
+                alert(error.message);
+                select.value = statusBadge.textContent; // Revertir al valor original
+            }
         }
     });
 
