@@ -6,6 +6,41 @@
     <title>Registro - Boleticket</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boleticket© - Conciertos</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Boleticket©</h1>
+        <p>¡Compra tus boletos para los mejores conciertos aquí!</p>
+    </header>
+
+    <style>
+    body {
+        background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
+                    url('https://i.ibb.co/b57tsL4g/THEDRAIN.gif') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    </style>
+
+    <nav>
+        <a href="#">Inicio</a>
+        <div id="accountSection">
+            <a href="login.html" id="accountLink">Mi cuenta</a>
+            <!-- Contenedor para datos de usuario autenticado -->
+            <div id="userPanel" style="display: none;">
+                <span id="usernameDisplay"></span>
+                <input type="hidden" name="_csrf" id="csrfToken">
+                <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
+            </div>
+        </div>
+    </nav>
 <body>
     <div class="auth-container">
         <h1>Registro</h1>
@@ -40,5 +75,9 @@
             document.getElementById('csrfToken').value = data.csrfToken;
         });
 </script>
+<footer>
+        © 2025 Boleticket©. Todos los derechos reservados.
+        <a href="admin.html" id="adminLink" style="color: #666; margin-left: 20px; display: none;">Admin</a>
+    </footer>
 </body>
 </html>

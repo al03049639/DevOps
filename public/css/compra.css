@@ -1,85 +1,106 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 body {
     font-family: Arial, sans-serif;
     background: #f4f4f4;
-    margin: 0;
+    text-align: center;
+}
+
+main {
+    flex: 1;
+    padding-bottom: 40px;
+}
+
+header {
+    background-color: #323435;
+    color: white;
     padding: 20px;
     text-align: center;
-  }
-  h1 {
-    color: #0071ce;
-    margin-bottom: 10px;
-  }
-  p {
-    margin-bottom: 30px;
-    font-size: 1.1em;
-  }
-  .map-container {
-    position: relative;
-    width: 90%;
+}
+
+nav {
+    background-color: #1c1d1e;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+.layout-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px;
+}
+
+.map-container {
+    flex: 1;
     max-width: 600px;
     height: 400px;
-    margin: 0 auto;
-    opacity: .9;
     background: url('https://periodicocorreo.com.mx/__export/sites/correo/img/2024/03/06/103015s-071653982.jpg') no-repeat center center;
     background-size: contain;
     border: 2px solid #ccc;
     border-radius: 10px;
-    overflow: hidden;
-  }
+    opacity: 0.9;
+}
 
-  .ticket-control {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 15px;
-      margin: 10px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      justify-content: center;
-  }
-
-  .ticket-control label {
-      font-weight: bold;
-      min-width: 80px;
-  }
-
-  .ticket-control input {
-      width: 50px;
-      text-align: center;
-  }
-  
-  #vipDisponible,
-  #generalDisponible,
-  #balconDisponible {
-      color: #0071ce;
-      font-weight: bold;
-      margin-left: 10px;
-  }
-  
-
-  #precio-total {
-      font-size: 1.5em;
-      color: #0071ce;
-      margin: 20px 0;
-  }
-  .legend {
-    margin-top: 20px;
+.ticket-controls-container {
+    flex: 1;
+    max-width: 400px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    gap: 20px;
-  }
-  .legend div {
+}
+
+.ticket-control {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 0.9em;
-  }
-  .legend .box {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-  }
-  .btn-confirmar {
+    gap: 10px;
+    justify-content: center;
+}
+
+.ticket-control label {
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.ticket-control input {
+    width: 50px;
+    text-align: center;
+}
+
+#vipDisponible,
+#generalDisponible,
+#balconDisponible {
+    color: #0071ce;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+#precio-total {
+    font-size: 1.5em;
+    color: #0071ce;
+    margin: 20px 0;
+}
+
+.btn-confirmar {
     margin-top: 30px;
     padding: 10px 30px;
     background-color: #28a745;
@@ -88,10 +109,9 @@ body {
     border-radius: 5px;
     font-size: 1.1em;
     cursor: pointer;
-  }
+}
 
-  /* Modal */
-  .modal {
+.modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -100,8 +120,9 @@ body {
     background: rgba(0,0,0,0.5);
     justify-content: center;
     align-items: center;
-  }
-  .modal-content {
+}
+
+.modal-content {
     background: white;
     padding: 30px;
     border-radius: 10px;
@@ -109,44 +130,34 @@ body {
     width: 90%;
     max-width: 400px;
     animation: aparecer 0.3s ease;
-  }
-  @keyframes aparecer {
-    from {transform: scale(0.7);}
-    to {transform: scale(1);}
-  }
-  .modal-content select, .modal-content input, .modal-content button {
+}
+
+@keyframes aparecer {
+    from { transform: scale(0.7); }
+    to { transform: scale(1); }
+}
+
+.modal-content select,
+.modal-content input,
+.modal-content button {
     margin-top: 15px;
     width: 90%;
     padding: 10px;
     font-size: 1em;
-  }
-  .btn-pagar {
+}
+
+.btn-pagar {
     background-color: #0071ce;
     color: white;
     border: none;
     border-radius: 5px;
     margin-top: 20px;
     cursor: pointer;
-  }
-  .resumen {
-    background: #e0e0e0;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 10px;
-    font-size: 0.95em;
-    text-align: left;
-  }
-  #precio-total {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #333;
-  }
-  .btn-volver {
-    background-color: #323435;
+}
+
+footer {
+    background: #333;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
+    text-align: center;
+    padding: 20px;
 }
