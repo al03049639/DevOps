@@ -40,34 +40,43 @@
         MAIN EVENTS
     </section>
 
-    <section class="concerts">
-        <div class="concert">
-            <img src="https://es.concerts-metal.com/images/flyers/202306/1686509190--Bring-Me-The-Horizon---Tour-2024.webp" alt="Bring Me The Horizon">
-            <h3>Bring Me The Horizon</h3>
-            <p>Ciudad de México - 5 de Julio</p>
-            <a class="btn" href="bring-me-the-horizon.html">Comprar boletos</a>
-        </div>
-
-        <div class="concert">
-            <img src="https://es.concerts-metal.com/images/flyers/202304/1680589361.webp" alt="Bad Omens">
-            <h3>Bad Omens</h3>
-            <p>Guadalajara - 10 de Agosto</p>
-            <span class="btn disabled">Sold Out</span>
-        </div>
-
-        <div class="concert">
-            <img src="https://wdhafm.com/uploads/2024/11/My-Chemical-Romance-8-9-25_Featured.jpg" alt="My Chemical Romance">
-            <h3>My Chemical Romance</h3>
-            <p>Monterrey - 22 de Septiembre</p>
-            <span class="btn disabled">Sold Out</span>
-        </div>
+    <section class="concerts" id="conciertosContainer">
+        <!-- Los eventos se cargarán aquí dinámicamente -->
     </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const contenedor = document.getElementById('conciertosContainer');
+        
+        try {
+            const response = await fetch('/eventos');
+            const eventos = await response.json();
+
+            eventos.forEach(evento => {
+                const disponible = evento.boletos_vip + evento.boletos_general + evento.boletos_balcon > 0;
+                contenedor.innerHTML += `
+                    <div class="concert">
+                        <img src="${evento.imagen_url}" alt="${evento.nombre}">
+                        <h3>${evento.nombre}</h3>
+                        <p>${evento.lugar} - ${new Date(evento.fecha).toLocaleDateString()}</p>
+                        <a class="btn ${!disponible ? 'disabled' : ''}" 
+                        href="compra.html?id=${evento.id}">
+                        ${disponible ? 'Comprar boletos' : 'Agotado'}
+                        </a>
+                    </div>
+                `;
+            });
+        } catch (error) {
+            console.error('Error cargando eventos:', error);
+        }
+    });
+    </script>
 
     <script src="js/cuenta.js"></script>
 
     <footer>
         © 2025 Boleticket©. Todos los derechos reservados.
-        <a href="admin.html" style="color: #666; margin-left: 20px;">Admin</a>
+        <a href="admin.html" id="adminLink" style="color: #666; margin-left: 20px; display: none;">Admin</a>
     </footer>
 </body>
 </html>

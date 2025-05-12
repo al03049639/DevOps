@@ -89,14 +89,6 @@ app.get('/auth/session-status', (req, res) => {
     }
 });
 
-function checkAuth(req, res, next) {
-  if (req.session.sessionId) {
-    next(); // Sesión válida
-  } else {
-    res.status(401).json({ error: 'No autenticado' });
-  }
-}
-
 /**
  * 📌 Ruta para cerrar sesión.
  */
@@ -121,35 +113,158 @@ app.listen(PORT, () => logger.logMessage(`Server running on port ${PORT}`));
 
 app.post('/confirmar-pago', async (req, res) => {
     try {
-        // Verificar sesión
-        if (!req.session.users) { // Usar "users" para mantener consistencia
-            return res.status(401).json({ error: 'Usuario no autenticado' });
-        }
+        if (!req.session.users) return res.status(401).json({ error: 'Usuario no autenticado' });
+        
+        const { cantidades, metodoPago, eventoId } = req.body; 
+        
+        const total = (cantidades.vip * 2500) + 
+                     (cantidades.general * 1500) + 
+                     (cantidades.balcon * 800);
 
-        const { asientos, metodoPago } = req.body;
-        const total = calcularTotal(asientos); 
-
-        const transactionId = uuidv4(); 
+        const transactionId = uuidv4();
 
         await pool.execute(`
             INSERT INTO transactions 
-                (transaction_id, user_id, total, seats, payment_method)
-            VALUES (?, ?, ?, ?, ?)
+                (transaction_id, user_id, total, payment_method, cant_vip, cant_general, cant_balcon)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         `, [
-            transactionId, // Usar el UUID generado
+            transactionId,
             req.session.users.id,
             total,
-            JSON.stringify(asientos),
-            metodoPago
+            metodoPago,
+            cantidades.vip,
+            cantidades.general,
+            cantidades.balcon
         ]);
 
-        res.json({ 
-            transactionId // Enviar el UUID al frontend
-        });
+        // Actualizar stock del evento
+        await pool.execute(`
+            UPDATE eventos SET
+                boletos_vip = boletos_vip - ?,
+                boletos_general = boletos_general - ?,
+                boletos_balcon = boletos_balcon - ?
+            WHERE id = ?
+        `, [
+            cantidades.vip,
+            cantidades.general,
+            cantidades.balcon,
+            eventoId
+        ]);
 
+        res.json({ transactionId });
     } catch (error) {
         logger.logMessage(`Error en /confirmar-pago: ${error.message}`, 'error');
         res.status(500).json({ error: error.message });
     }
 });
 
+// Middleware para verificar admin
+const checkAdmin = async (req, res, next) => {
+    if (!req.session.users) return res.status(401).json({ error: 'No autenticado' });
+    
+    const [isAdmin] = await pool.execute(
+        'SELECT * FROM administradores WHERE username = ? OR email = ?',
+        [req.session.users.username, req.session.users.email]
+    );
+    
+    if (isAdmin.length > 0) {
+        next();
+    } else {
+        res.status(403).json({ error: 'Acceso denegado: No eres administrador' });
+    }
+};
+
+// --- Rutas de Eventos ---
+app.get('/admin/eventos', checkAdmin, async (req, res) => {
+    const [eventos] = await pool.execute('SELECT * FROM eventos');
+    res.json(eventos);
+});
+
+app.post('/admin/eventos', checkAdmin, async (req, res) => {
+    const { nombre, fecha, lugar, imagen_url, boletos_vip, boletos_general, boletos_balcon } = req.body;
+    await pool.execute(
+        'INSERT INTO eventos (nombre, fecha, lugar, imagen_url, boletos_vip, boletos_general, boletos_balcon) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [nombre, fecha, lugar, imagen_url, boletos_vip, boletos_general, boletos_balcon]
+    );
+    res.json({ success: true });
+});
+
+app.put('/admin/eventos/:id', checkAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { nombre, fecha, lugar, imagen_url, boletos_vip, boletos_general, boletos_balcon } = req.body;
+    await pool.execute(
+        'UPDATE eventos SET nombre=?, fecha=?, lugar=?, imagen_url=?, boletos_vip=?, boletos_general=?, boletos_balcon=? WHERE id=?',
+        [nombre, fecha, lugar, imagen_url, boletos_vip, boletos_general, boletos_balcon, id]
+    );
+    res.json({ success: true });
+});
+
+// --- Rutas de Transacciones ---
+app.get('/admin/transacciones', checkAdmin, async (req, res) => {
+    const [transacciones] = await pool.execute(`
+        SELECT 
+            transaction_id,
+            total,
+            payment_method,
+            cant_vip,
+            cant_general,
+            cant_balcon,
+            transaction_date,
+            status
+        FROM transactions
+    `);
+    res.json(transacciones);
+});
+app.put('/admin/transacciones/:id/estado', checkAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    await pool.execute('UPDATE transactions SET status=? WHERE transaction_id=?', [estado, id]);
+    res.json({ success: true });
+});
+
+
+// --- Rutas de Administradores ---
+app.get('/admin/whitelist', checkAdmin, async (req, res) => {
+    const [admins] = await pool.execute('SELECT * FROM administradores');
+    res.json(admins);
+});
+
+app.post('/admin/whitelist', checkAdmin, async (req, res) => {
+    const { username, email } = req.body;
+    
+    try {
+        // Verificar que el usuario existe
+        const [user] = await pool.execute(
+            'SELECT * FROM users WHERE username = ? OR email = ?',
+            [username, email]
+        );
+        
+        if (user.length === 0) throw new Error('Usuario no registrado');
+
+        await pool.execute(
+            'INSERT INTO administradores (username, email) VALUES (?, ?)',
+            [username, email]
+        );
+        
+        res.json({ success: true });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.delete('/admin/whitelist/:id', checkAdmin, async (req, res) => {
+    await pool.execute('DELETE FROM administradores WHERE id = ?', [req.params.id]);
+    res.json({ success: true });
+});
+
+// Nueva ruta para obtener todos los eventos
+app.get('/eventos', async (req, res) => {
+    const [eventos] = await pool.execute('SELECT * FROM eventos');
+    res.json(eventos);
+});
+
+// Ruta para obtener un evento por ID
+app.get('/eventos/:id', async (req, res) => {
+    const [evento] = await pool.execute('SELECT * FROM eventos WHERE id = ?', [req.params.id]);
+    res.json(evento[0] || {});
+});

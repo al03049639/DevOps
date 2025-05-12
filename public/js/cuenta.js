@@ -100,6 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 accountLink.style.display = 'none';
                 userPanel.style.display = 'inline-flex';
                 usernameDisplay.textContent = users.username;
+                // Mostrar enlace de admin si es administrador
+                fetch('/admin/whitelist')
+                .then(res => res.json())
+                .then(admins => {
+                    const esAdmin = admins.some(a => a.username === users.username);
+                    if (esAdmin) {
+                        document.getElementById('adminLink').style.display = 'inline';
+                    }
+                });
             }
         } catch (error) {
             console.error('Error verificando sesión:', error);

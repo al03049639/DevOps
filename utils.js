@@ -1,11 +1,7 @@
-function calcularTotal(asientos) {
-    const precios = { vip: 2500, general: 1500, balcon: 800 };
-    return asientos.reduce((total, asiento) => {
-        const tipo = asiento.toLowerCase().includes('vip') ? 'vip' 
-                 : asiento.includes('G') ? 'general' 
-                 : 'balcon';
-        return total + precios[tipo];
-    }, 0);
+function calcularTotal(cantidades) {
+    return (cantidades.vip * 2500) + 
+           (cantidades.general * 1500) + 
+           (cantidades.balcon * 800);
 }
 
 module.exports = { calcularTotal };

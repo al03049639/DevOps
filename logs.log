@@ -59,3 +59,42 @@
 [33m[2025:05:11 16:23:43] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 41791660-1215-4046-a5bf-d5413ca097b8[0m
 [33m[2025:05:11 16:23:43] [DEBUG] ✅ Session stored successfully.[0m
 [33m[2025:05:11 16:23:43] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 16:50:46] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 16:50:46] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 8191123b-af43-4746-9730-6b2829138873[0m
+[33m[2025:05:11 16:50:46] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 16:50:46] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 17:51:07] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 17:51:07] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 17:53:40] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 17:53:40] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 17:56:27] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 17:56:27] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 66b3789f-90de-4433-8949-1265c5122508[0m
+[33m[2025:05:11 17:56:27] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 17:56:27] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 18:30:23] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 18:30:23] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 4427d6cb-cd9d-4b97-8fbb-74448a212f52[0m
+[33m[2025:05:11 18:30:23] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 18:30:23] [DEBUG] END authenticateUser()[0m
+[33m[2025:05:11 18:32:58] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 18:32:58] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 18:33:03] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 18:33:03] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 18:33:25] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 18:33:25] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 7dbd439a-fbcc-4576-813a-6395447195b6[0m
+[33m[2025:05:11 18:33:25] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 18:33:25] [DEBUG] END authenticateUser()[0m
+[31m[2025:05:11 19:17:50] [ERROR] Error en /confirmar-pago: Cannot read properties of undefined (reading 'reduce')[0m
+[31m[2025:05:11 19:22:22] [ERROR] Error en /confirmar-pago: Cannot read properties of undefined (reading 'reduce')[0m
+[33m[2025:05:11 19:22:32] [DEBUG] ⚠️ Closing MySQL Connection Pool...[0m
+[33m[2025:05:11 19:22:32] [DEBUG] ✅ MySQL Pool Closed Successfully.[0m
+[33m[2025:05:11 19:22:37] [DEBUG] Server running on port 3000[0m
+[36m[2025:05:11 19:22:37] [INFO] ✅ MySQL Connected Successfully![0m
+[33m[2025:05:11 19:22:51] [DEBUG] BEGIN authenticateUser()[0m
+[33m[2025:05:11 19:22:51] [DEBUG] 🔐 Storing session: UserID = 1, SessionID = 88c0eab5-ca55-47c0-8ba7-d6f96627a87f[0m
+[33m[2025:05:11 19:22:51] [DEBUG] ✅ Session stored successfully.[0m
+[33m[2025:05:11 19:22:51] [DEBUG] END authenticateUser()[0m
+[31m[2025:05:11 19:23:04] [ERROR] Error en /confirmar-pago: Bind parameters must not contain undefined. To pass SQL NULL specify JS null[0m
+[31m[2025:05:11 19:28:17] [ERROR] Error en /confirmar-pago: Bind parameters must not contain undefined. To pass SQL NULL specify JS null[0m
+[31m[2025:05:11 19:28:28] [ERROR] Error en /confirmar-pago: Bind parameters must not contain undefined. To pass SQL NULL specify JS null[0m
+[31m[2025:05:11 19:34:51] [ERROR] Error en /confirmar-pago: Bind parameters must not contain undefined. To pass SQL NULL specify JS null[0m
+[31m[2025:05:11 19:41:40] [ERROR] Error en /confirmar-pago: Bind parameters must not contain undefined. To pass SQL NULL specify JS null[0m

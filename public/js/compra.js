@@ -1,4 +1,6 @@
 let csrfToken;
+let evento; 
+let total = 0; 
 
 async function obtenerCSRFToken() {
     const response = await fetch('/csrf-token');
@@ -6,34 +8,53 @@ async function obtenerCSRFToken() {
     csrfToken = data.csrfToken;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    obtenerCSRFToken();
-    const seats = document.querySelectorAll('.seat:not(.occupied)');
-    const btnConfirmar = document.querySelector('.btn-confirmar');
+async function cargarEvento() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventoId = urlParams.get('id');
+        const response = await fetch(`/eventos/${eventoId}`);
+        evento = await response.json();
+        actualizarDisponibilidad();
+        actualizarPrecio();
+    } catch (error) {
+        alert("Error al cargar el evento");
+    }
+}
+
+function actualizarDisponibilidad() {
+    const vipQty = parseInt(document.getElementById('vipQty').value) || 0;
+    const generalQty = parseInt(document.getElementById('generalQty').value) || 0;
+    const balconQty = parseInt(document.getElementById('balconQty').value) || 0;
+    
+    document.getElementById('vipDisponible').textContent = `Disponibles: ${evento.boletos_vip - vipQty}`;
+    document.getElementById('generalDisponible').textContent = `Disponibles: ${evento.boletos_general - generalQty}`;
+    document.getElementById('balconDisponible').textContent = `Disponibles: ${evento.boletos_balcon - balconQty}`;
+}
+
+function actualizarPrecio() {
+    const vipQty = parseInt(document.getElementById('vipQty').value) || 0;
+    const generalQty = parseInt(document.getElementById('generalQty').value) || 0;
+    const balconQty = parseInt(document.getElementById('balconQty').value) || 0;
+    
+    total = (vipQty * 2500) + (generalQty * 1500) + (balconQty * 800);
+    document.getElementById('precio-total').textContent = `Total: $${total} MXN`;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await obtenerCSRFToken();
+    await cargarEvento();
     const precioTotal = document.getElementById('precio-total');
     const modal = document.getElementById('modal');
     const metodoPago = document.getElementById('metodo-pago');
     
-    // Selección de asientos
-    seats.forEach(seat => {
-        seat.addEventListener('click', () => {
-            seat.classList.toggle('selected');
-            actualizarTotal();
-        });
-    });
     
-    // Actualizar precio total
-    function actualizarTotal() {
-        const selected = document.querySelectorAll('.seat.selected');
-        let total = 0;
-        selected.forEach(seat => total += parseInt(seat.dataset.precio));
-        precioTotal.textContent = `Total: $${total} MXN`;
-    }
-    
-    // Confirmar compra
+    // ========== [Confirmar compra actualizado] ========== //
+    const btnConfirmar = document.querySelector('.btn-confirmar');
     btnConfirmar.addEventListener('click', async () => {
-        if (document.querySelectorAll('.seat.selected').length > 0) {
-        // Verificar sesión y autocompletar antes de abrir el modal
+        const vipQty = parseInt(document.getElementById('vipQty').value) || 0;
+        const generalQty = parseInt(document.getElementById('generalQty').value) || 0;
+        const balconQty = parseInt(document.getElementById('balconQty').value) || 0;
+         // Verificar sesión y autocompletar antes de abrir el modal
         const sessionCheck = await fetch('/auth/session-status');
         const sessionData = await sessionCheck.json();
         
@@ -41,11 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('nombre').value = sessionData.users.nombre_completo;
             document.getElementById('correo').value = sessionData.users.email;
         }
-
-            modal.style.display = 'flex';
-        } else {
-            alert('Selecciona al menos un asiento');
+        if (vipQty + generalQty + balconQty === 0) {
+            alert('Selecciona al menos un boleto');
+            return;
         }
+        modal.style.display = 'flex';
     });
     
     // Manejar método de pago
@@ -68,7 +89,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
+    document.querySelectorAll('.btn-plus, .btn-minus').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const tipo = e.target.dataset.tipo;
+            const input = document.getElementById(`${tipo}Qty`);
+            const max = evento[`boletos_${tipo}`];
+            
+            const currentValue = parseInt(input.value) || 0;
+            const increment = e.target.classList.contains('btn-plus') ? 1 : -1;
+            const nuevoValor = Math.max(0, Math.min(max, currentValue + increment));
+            
+            input.value = nuevoValor;
+            actualizarDisponibilidad();
+            actualizarPrecio();
+        });
+    });
     
     // Cerrar modal
     window.onclick = (e) => e.target === modal && (modal.style.display = 'none');
@@ -77,10 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const nombre = document.getElementById('nombre').value;
         const email = document.getElementById('correo').value;
         const metodoPago = document.getElementById('metodo-pago').value;
-        const selectedSeats = Array.from(document.querySelectorAll('.seat.selected')).map(seat => seat.textContent.trim());
-        const selected = document.querySelectorAll('.seat.selected');
-        const total = Array.from(selected).reduce((sum, seat) => sum + parseInt(seat.dataset.precio), 0);
+        const cantidades = [
+            { tipo: 'cant_vip', cantidad: parseInt(document.getElementById('vipQty').value) || 0 }, // Key fixed
+            { tipo: 'cant_general', cantidad: parseInt(document.getElementById('generalQty').value) || 0 }, // Key fixed
+            { tipo: 'cant_balcon', cantidad: parseInt(document.getElementById('balconQty').value) || 0 } // Key fixed
+        ];
 
+        const eventoId = new URLSearchParams(window.location.search).get('id');
 
         // Validaciones primero
         if (!nombre.trim()) {
@@ -140,9 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Verificar sesión activa
-            const sessionCheck = await fetch('/auth/session-status');
-            const sessionData = await sessionCheck.json();
 
             const response = await fetch('/confirmar-pago', {
                 method: 'POST',
@@ -153,8 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     nombre,
                     email,
-                    asientos: selectedSeats,
-                    metodoPago
+                    cantidades,
+                    metodoPago,
+                    eventoId,
+                    total
                 }),
                 credentials: 'include'
             });

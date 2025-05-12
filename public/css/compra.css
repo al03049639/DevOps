@@ -26,23 +26,42 @@ body {
     border-radius: 10px;
     overflow: hidden;
   }
-  .seat {
-    position: absolute;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: none;
-    color: white;
-    font-size: 0.8em;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .vip { background-color: #d4af37; } /* Oro */
-  .general { background-color: #0071ce; } /* Azul */
-  .balcon { background-color: #8e44ad; } /* Morado */
-  .occupied { background-color: grey !important; cursor: not-allowed; }
-  .selected { background-color: #28a745 !important; }
 
+  .ticket-control {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      margin: 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+  }
+
+  .ticket-control label {
+      font-weight: bold;
+      min-width: 80px;
+  }
+
+  .ticket-control input {
+      width: 50px;
+      text-align: center;
+  }
+  
+  #vipDisponible,
+  #generalDisponible,
+  #balconDisponible {
+      color: #0071ce;
+      font-weight: bold;
+      margin-left: 10px;
+  }
+  
+
+  #precio-total {
+      font-size: 1.5em;
+      color: #0071ce;
+      margin: 20px 0;
+  }
   .legend {
     margin-top: 20px;
     display: flex;

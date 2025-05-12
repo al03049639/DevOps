@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración - Boleticket</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Gestión de Eventos -->
+        <section class="seccion">
+            <h2>Gestión de Eventos</h2>
+            <button id="nuevoEventoBtn">➕ Nuevo Evento</button>
+            <div id="listaEventos"></div>
+        </section>
+
+        <!-- Reportes de Ventas -->
+        <section class="seccion">
+            <h2>Reportes de Ventas</h2>
+            <div id="graficoVentas"></div>
+            <div id="detalleTransacciones"></div>
+        </section>
+
+        <!-- Sección de Gestión de Administradores -->
+        <section class="seccion">
+            <h2>Administradores</h2>
+            <div class="add-admin">
+                <input type="text" id="inputAdmin" placeholder="Usuario o correo">
+                <button id="addAdminBtn">➕ Agregar</button>
+            </div>
+            <div id="listaAdmins"></div>
+        </section>
+
+        <!-- Modal para Editar/Crear Evento -->
+        <div id="eventoModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Editar Evento</h3>
+                <input type="text" id="eventoNombre" placeholder="Nombre del evento">
+                <input type="datetime-local" id="eventoFecha">
+                <input type="text" id="eventoLugar" placeholder="Lugar">
+                <input type="text" id="eventoImagen" placeholder="URL de la imagen">
+                <div class="boletos">
+                    <input type="number" id="boletosVIP" placeholder="Boletos VIP">
+                    <input type="number" id="boletosGeneral" placeholder="Boletos General">
+                    <input type="number" id="boletosBalcon" placeholder="Boletos Balcón">
+                </div>
+                <button id="guardarEventoBtn">💾 Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
