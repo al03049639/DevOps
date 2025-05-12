@@ -6,56 +6,82 @@
     <title>Compra - Bring Me The Horizon</title>
     <link rel="stylesheet" href="css/compra.css">
 </head>
+
 <body>
-    <h1>Compra tus boletos</h1>
-    <p>Selecciona tus asientos:</p>
-    
-    <div class="map-container">
-        <div class="ticket-controls-container">
-            <div class="ticket-control">
-                <label>VIP ($2500)</label>
-                <button class="btn-minus" data-tipo="vip">-</button>
-                <input type="number" id="vipQty" value="0" min="0" readonly>
-                <button class="btn-plus" data-tipo="vip">+</button>
-                <span id="vipDisponible"></span>
-            </div>
-            <div class="ticket-control">
-                <label>General ($1500)</label>
-                <button class="btn-minus" data-tipo="general">-</button>
-                <input type="number" id="generalQty" value="0" min="0" readonly>
-                <button class="btn-plus" data-tipo="general">+</button>
-                <span id="generalDisponible"></span>
-            </div>
-            <div class="ticket-control">
-                <label>Balcón ($800)</label>
-                <button class="btn-minus" data-tipo="balcon">-</button>
-                <input type="number" id="balconQty" value="0" min="0" readonly>
-                <button class="btn-plus" data-tipo="balcon">+</button>
-                <span id="balconDisponible"></span>
+    <header>
+        <h1>Boleticket©</h1>
+        <p>¡Compra tus boletos para los mejores conciertos aquí!</p>
+    </header>
+
+    <nav>
+        <a href="#">Inicio</a>
+        <div id="accountSection">
+            <a href="login.html" id="accountLink">Mi cuenta</a>
+            <div id="userPanel" style="display: none;">
+                <span id="usernameDisplay"></span>
+                <input type="hidden" name="_csrf" id="csrfToken">
+                <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
             </div>
         </div>
-    </div>
-    
-    <div id="precio-total">Total: $0 MXN</div>
-    
-    <button class="btn-confirmar">Confirmar Compra</button>
-    
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h2>Detalles de Pago</h2>
-            <input type="hidden" id="csrf-token" name="_csrf">
-            <input type="text" id="nombre" placeholder="Nombre completo">
-            <input type="email" id="correo" placeholder="Correo electrónico">
-            <select id="metodo-pago">
-                <option value="">-- Selecciona método de pago --</option>
-                <option value="debito">Tarjeta de Débito</option>
-                <option value="credito">Tarjeta de Crédito</option>
-                <option value="paypal">PayPal</option>
-            </select>
-            <div id="extra-fields"></div>
-            <button class="btn-pagar">Pagar</button>
+    </nav>
+
+    <main>
+        <h1>Compra tus boletos</h1>
+        <p>Selecciona tus asientos:</p>
+
+        <div class="layout-flex">
+            <div class="map-container"></div>
+
+            <div class="ticket-controls-container">
+                <div class="ticket-control">
+                    <label>VIP ($2500)</label>
+                    <button class="btn-minus" data-tipo="vip">-</button>
+                    <input type="number" id="vipQty" value="0" min="0" readonly>
+                    <button class="btn-plus" data-tipo="vip">+</button>
+                    <span id="vipDisponible"></span>
+                </div>
+                <div class="ticket-control">
+                    <label>General ($1500)</label>
+                    <button class="btn-minus" data-tipo="general">-</button>
+                    <input type="number" id="generalQty" value="0" min="0" readonly>
+                    <button class="btn-plus" data-tipo="general">+</button>
+                    <span id="generalDisponible"></span>
+                </div>
+                <div class="ticket-control">
+                    <label>Balcón ($800)</label>
+                    <button class="btn-minus" data-tipo="balcon">-</button>
+                    <input type="number" id="balconQty" value="0" min="0" readonly>
+                    <button class="btn-plus" data-tipo="balcon">+</button>
+                    <span id="balconDisponible"></span>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <div id="precio-total">Total: $0 MXN</div>
+        <button class="btn-confirmar">Confirmar Compra</button>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h2>Detalles de Pago</h2>
+                <input type="hidden" id="csrf-token" name="_csrf">
+                <input type="text" id="nombre" placeholder="Nombre completo">
+                <input type="email" id="correo" placeholder="Correo electrónico">
+                <select id="metodo-pago">
+                    <option value="">-- Selecciona método de pago --</option>
+                    <option value="debito">Tarjeta de Débito</option>
+                    <option value="credito">Tarjeta de Crédito</option>
+                    <option value="paypal">PayPal</option>
+                </select>
+                <div id="extra-fields"></div>
+                <button class="btn-pagar">Pagar</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        © 2025 Boleticket©. Todos los derechos reservados.
+        <a href="admin.html" id="adminLink" style="color: #ccc; margin-left: 20px; display: none;">Admin</a>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
     <script>
