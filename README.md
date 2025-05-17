@@ -82,19 +82,15 @@ PUT /admin/transacciones/:id/estado - Cambiar estado (Admin)
 
 ### **bash**
 git clone https://github.com/al03049639/DevOps.git
-cd boleticket
+
 ### **Instalar dependencias:**
 
 ### **bash**
 npm install
-Configurar variables de entorno (crear .env):
 
-DB_HOST=localhost
-DB_USER=tu_usuario
-DB_PASSWORD=tu_contraseña
-DB_NAME=boleticket
-SESSION_SECRET=tu_secreto
-Ejecutar servidor:
+### **Configurar variables de entorno (crear .env):**
+
+Recuerda crear la base de datos en MySQL y configurar las variables de entorno
 
 ### **bash**
 node server.js
